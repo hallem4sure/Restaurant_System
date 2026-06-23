@@ -25,4 +25,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     
     // Tables Management
     Route::resource('tables', \App\Http\Controllers\Admin\TableController::class);
+
+    // Offers Management
+    Route::resource('offers', \App\Http\Controllers\Admin\OfferController::class);
+    Route::patch('offers/{offer}/toggle-status', [\App\Http\Controllers\Admin\OfferController::class, 'toggleStatus'])->name('offers.toggle-status');
 });

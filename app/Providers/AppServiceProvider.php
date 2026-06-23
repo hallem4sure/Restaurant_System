@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Contracts\Services\TableServiceInterface::class,
             \App\Services\TableService::class
         );
+        $this->app->bind(
+            \App\Contracts\Services\OfferServiceInterface::class,
+            \App\Services\OfferService::class
+        );
     }
 
     /**
