@@ -11,6 +11,7 @@ class RestaurantTable extends Model
         'capacity',
         'type',
         'status',
+        'is_private',
         'location',
         'qr_code_path',
         'qr_code_token',
