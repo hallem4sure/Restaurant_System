@@ -15,4 +15,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // ── Admin ──────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    
+    // Menu Management
+    Route::resource('menu-sections', \App\Http\Controllers\Admin\MenuSectionController::class);
+    Route::resource('menu-categories', \App\Http\Controllers\Admin\MenuCategoryController::class);
+    Route::resource('menu-subcategories', \App\Http\Controllers\Admin\MenuSubcategoryController::class);
+    Route::resource('menu-items', \App\Http\Controllers\Admin\MenuItemController::class);
+    Route::resource('tags', \App\Http\Controllers\Admin\TagController::class)->except(['show']);
 });

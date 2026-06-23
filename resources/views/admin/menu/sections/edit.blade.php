@@ -1,0 +1,49 @@
+@extends('layouts.app')
+
+@section('page_title', 'Edit Menu Section')
+
+@section('main_content')
+<div class="card card-info">
+    <div class="card-header">
+        <h3 class="card-title">Edit Section: {{ $menuSection->name }}</h3>
+    </div>
+    <form action="{{ route('admin.menu-sections.update', $menuSection) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="card-body">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $menuSection->name) }}" required>
+                @error('name')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ old('description', $menuSection->description) }}</textarea>
+                @error('description')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="sort_order">Sort Order</label>
+                <input type="number" class="form-control @error('sort_order') is-invalid @enderror" id="sort_order" name="sort_order" value="{{ old('sort_order', $menuSection->sort_order) }}">
+                @error('sort_order')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="hidden" name="is_active" value="0">
+                    <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" value="1" {{ old('is_active', $menuSection->is_active) ? 'checked' : '' }}>
+                    <label class="custom-control-label" for="is_active">Active</label>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-info">Update</button>
+            <a href="{{ route('admin.menu-sections.index') }}" class="btn btn-default">Cancel</a>
+        </div>
+    </form>
+</div>
+@stop
