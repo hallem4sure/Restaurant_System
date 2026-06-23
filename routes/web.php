@@ -22,4 +22,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::resource('menu-subcategories', \App\Http\Controllers\Admin\MenuSubcategoryController::class);
     Route::resource('menu-items', \App\Http\Controllers\Admin\MenuItemController::class);
     Route::resource('tags', \App\Http\Controllers\Admin\TagController::class)->except(['show']);
+    
+    // Tables Management
+    Route::resource('tables', \App\Http\Controllers\Admin\TableController::class);
 });

@@ -15,6 +15,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Contracts\Services\MenuServiceInterface::class,
             \App\Services\MenuService::class
         );
+        $this->app->bind(
+            \App\Contracts\Services\TableServiceInterface::class,
+            \App\Services\TableService::class
+        );
     }
 
     /**
