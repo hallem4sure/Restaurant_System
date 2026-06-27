@@ -18,32 +18,42 @@
                     <table class="table table-bordered" id="items-table">
                         <thead>
                             <tr>
-                                <th>Menu Item <span class="text-danger">*</span></th>
+                                <th style="width: 35%">Menu Item <span class="text-danger">*</span></th>
+                                <th style="width: 15%">Unit Price</th>
                                 <th style="width: 15%">Qty <span class="text-danger">*</span></th>
-                                <th style="width: 25%">Instructions</th>
-                                <th style="width: 10%">Action</th>
+                                <th style="width: 15%">Line Total</th>
+                                <th style="width: 15%">Action</th>
                             </tr>
                         </thead>
                         <tbody id="items-body">
                             @foreach(old('items', $order->items) as $i => $item)
-                            <tr>
+                            @php
+                                $itemId = is_object($item) ? $item->menu_item_id : ($item['menu_item_id'] ?? '');
+                                $itemQty = is_object($item) ? $item->quantity : ($item['quantity'] ?? 1);
+                                $itemNotes = is_object($item) ? $item->special_instructions : ($item['special_instructions'] ?? '');
+                            @endphp
+                            <tr class="item-row">
                                 <td>
                                     <select name="items[{{ $i }}][menu_item_id]" class="form-control item-select" required>
-                                        <option value="">-- Select Item --</option>
+                                        <option value="" data-price="0">-- Select Item --</option>
                                         @foreach($menuItems as $m)
-                                            <option value="{{ $m->id }}" {{ (isset($item['menu_item_id']) && $item['menu_item_id'] == $m->id) || (is_object($item) && $item->menu_item_id == $m->id) ? 'selected' : '' }}>
-                                                {{ $m->name }} ({{ number_format($m->price, 2) }})
+                                            <option value="{{ $m->id }}" data-price="{{ $m->price }}" {{ $itemId == $m->id ? 'selected' : '' }}>
+                                                {{ $m->name }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    <input type="text" name="items[{{ $i }}][special_instructions]" class="form-control mt-2" 
+                                           value="{{ $itemNotes }}" placeholder="Notes">
                                 </td>
                                 <td>
-                                    <input type="number" name="items[{{ $i }}][quantity]" class="form-control text-center" 
-                                           value="{{ is_object($item) ? $item->quantity : ($item['quantity'] ?? 1) }}" min="1" max="99" required>
+                                    <div class="form-control-plaintext text-right unit-price-display">0.00</div>
                                 </td>
                                 <td>
-                                    <input type="text" name="items[{{ $i }}][special_instructions]" class="form-control" 
-                                           value="{{ is_object($item) ? $item->special_instructions : ($item['special_instructions'] ?? '') }}" placeholder="Notes">
+                                    <input type="number" name="items[{{ $i }}][quantity]" class="form-control text-center item-qty" 
+                                           value="{{ $itemQty }}" min="1" max="99" required>
+                                </td>
+                                <td>
+                                    <div class="form-control-plaintext text-right font-weight-bold line-total-display">0.00</div>
                                 </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-danger btn-sm remove-item-btn"><i class="fas fa-times"></i></button>
@@ -74,6 +84,31 @@
     </div>
 
     <div class="col-lg-4">
+        <!-- Order Summary -->
+        <div class="card card-outline card-success">
+            <div class="card-header"><h3 class="card-title">Order Summary</h3></div>
+            <div class="card-body p-0">
+                <table class="table table-sm table-borderless mb-0">
+                    <tr>
+                        <th class="pl-3">Subtotal</th>
+                        <td class="text-right pr-3" id="summary-subtotal">0.00</td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Tax (<span id="tax-rate">{{ $taxRate }}</span>%)</th>
+                        <td class="text-right pr-3" id="summary-tax">0.00</td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Svc Charge (<span id="svc-rate">{{ $serviceChargeRate }}</span>%)</th>
+                        <td class="text-right pr-3" id="summary-service">0.00</td>
+                    </tr>
+                    <tr class="border-top">
+                        <th class="pl-3"><h4>Total</h4></th>
+                        <td class="text-right pr-3"><h4 id="summary-total">0.00</h4></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
         <div class="card card-outline card-info">
             <div class="card-header"><h3 class="card-title">Order Details</h3></div>
             <div class="card-body">
@@ -135,20 +170,24 @@
 
 {{-- Template for JS --}}
 <template id="item-row-template">
-    <tr>
+    <tr class="item-row">
         <td>
             <select name="items[__INDEX__][menu_item_id]" class="form-control item-select" required>
-                <option value="">-- Select Item --</option>
+                <option value="" data-price="0">-- Select Item --</option>
                 @foreach($menuItems as $item)
-                    <option value="{{ $item->id }}">{{ $item->name }} ({{ number_format($item->price, 2) }})</option>
+                    <option value="{{ $item->id }}" data-price="{{ $item->price }}">{{ $item->name }}</option>
                 @endforeach
             </select>
+            <input type="text" name="items[__INDEX__][special_instructions]" class="form-control mt-2" placeholder="Notes (optional)">
         </td>
         <td>
-            <input type="number" name="items[__INDEX__][quantity]" class="form-control text-center" value="1" min="1" max="99" required>
+            <div class="form-control-plaintext text-right unit-price-display">0.00</div>
         </td>
         <td>
-            <input type="text" name="items[__INDEX__][special_instructions]" class="form-control" placeholder="Notes (optional)">
+            <input type="number" name="items[__INDEX__][quantity]" class="form-control text-center item-qty" value="1" min="1" max="99" required>
+        </td>
+        <td>
+            <div class="form-control-plaintext text-right font-weight-bold line-total-display">0.00</div>
         </td>
         <td class="text-center">
             <button type="button" class="btn btn-danger btn-sm remove-item-btn"><i class="fas fa-times"></i></button>
@@ -163,11 +202,43 @@
         let itemIndex = 999;
         const tbody = document.getElementById('items-body');
         const template = document.getElementById('item-row-template').innerHTML;
+        const taxRate = parseFloat(document.getElementById('tax-rate').innerText) || 0;
+        const svcRate = parseFloat(document.getElementById('svc-rate').innerText) || 0;
 
         function addRow() {
             const html = template.replace(/__INDEX__/g, itemIndex);
             tbody.insertAdjacentHTML('beforeend', html);
             itemIndex++;
+            calculateTotals();
+        }
+
+        function calculateTotals() {
+            let subtotal = 0;
+            const rows = document.querySelectorAll('.item-row');
+            
+            rows.forEach(row => {
+                const select = row.querySelector('.item-select');
+                const qtyInput = row.querySelector('.item-qty');
+                
+                const selectedOption = select.options[select.selectedIndex];
+                const price = selectedOption ? parseFloat(selectedOption.getAttribute('data-price')) || 0 : 0;
+                const qty = parseInt(qtyInput.value) || 0;
+                
+                const lineTotal = price * qty;
+                subtotal += lineTotal;
+                
+                row.querySelector('.unit-price-display').innerText = price.toFixed(2);
+                row.querySelector('.line-total-display').innerText = lineTotal.toFixed(2);
+            });
+
+            const tax = subtotal * (taxRate / 100);
+            const svc = subtotal * (svcRate / 100);
+            const total = subtotal + tax + svc;
+
+            document.getElementById('summary-subtotal').innerText = subtotal.toFixed(2);
+            document.getElementById('summary-tax').innerText = tax.toFixed(2);
+            document.getElementById('summary-service').innerText = svc.toFixed(2);
+            document.getElementById('summary-total').innerText = total.toFixed(2);
         }
 
         document.getElementById('add-item-btn').addEventListener('click', addRow);
@@ -175,8 +246,24 @@
         tbody.addEventListener('click', function(e) {
             if (e.target.closest('.remove-item-btn')) {
                 e.target.closest('tr').remove();
+                calculateTotals();
             }
         });
+
+        tbody.addEventListener('change', function(e) {
+            if (e.target.classList.contains('item-select') || e.target.classList.contains('item-qty')) {
+                calculateTotals();
+            }
+        });
+
+        tbody.addEventListener('keyup', function(e) {
+            if (e.target.classList.contains('item-qty')) {
+                calculateTotals();
+            }
+        });
+        
+        // Initial calculation for pre-loaded rows
+        calculateTotals();
     });
 </script>
 @endsection

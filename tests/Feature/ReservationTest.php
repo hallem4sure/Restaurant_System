@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\RestaurantTable;
@@ -32,7 +33,7 @@ class ReservationTest extends TestCase
         ], $overrides);
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_create_reservation()
     {
         $admin = User::factory()->create();
@@ -50,7 +51,7 @@ class ReservationTest extends TestCase
         $this->assertDatabaseHas('reservations', ['customer_name' => 'Test Customer']);
     }
 
-    /** @test */
+    #[Test]
     public function reservation_fails_if_party_size_exceeds_capacity()
     {
         $admin = User::factory()->create();
@@ -70,7 +71,7 @@ class ReservationTest extends TestCase
         $this->assertDatabaseCount('reservations', 0);
     }
 
-    /** @test */
+    #[Test]
     public function reservation_fails_if_table_is_already_booked_at_requested_time()
     {
         $admin = User::factory()->create();
@@ -101,7 +102,7 @@ class ReservationTest extends TestCase
         $this->assertDatabaseCount('reservations', 1);
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_update_reservation_status()
     {
         $admin = User::factory()->create();
@@ -124,7 +125,7 @@ class ReservationTest extends TestCase
         $this->assertDatabaseHas('restaurant_tables', ['id' => $table->id, 'status' => 'occupied']);
     }
 
-    /** @test */
+    #[Test]
     public function waiter_cannot_delete_reservation()
     {
         $waiter = User::factory()->create();

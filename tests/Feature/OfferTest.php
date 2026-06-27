@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Offer;
@@ -29,7 +30,7 @@ class OfferTest extends TestCase
         ], $overrides);
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_create_percentage_offer()
     {
         $admin = User::factory()->create();
@@ -41,7 +42,7 @@ class OfferTest extends TestCase
         $this->assertDatabaseHas('offers', ['name' => 'Test Offer', 'type' => 'percentage']);
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_create_fixed_offer()
     {
         $admin = User::factory()->create();
@@ -57,7 +58,7 @@ class OfferTest extends TestCase
         $this->assertDatabaseHas('offers', ['name' => 'Fixed Offer', 'type' => 'fixed']);
     }
 
-    /** @test */
+    #[Test]
     public function offer_creation_fails_if_end_date_before_start_date()
     {
         $admin = User::factory()->create();
@@ -71,7 +72,7 @@ class OfferTest extends TestCase
         $response->assertSessionHasErrors('ends_at');
     }
 
-    /** @test */
+    #[Test]
     public function offer_creation_fails_if_percentage_over_100()
     {
         $admin = User::factory()->create();
@@ -85,7 +86,7 @@ class OfferTest extends TestCase
         $response->assertSessionHasErrors('value');
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_update_offer()
     {
         $admin = User::factory()->create();
@@ -105,7 +106,7 @@ class OfferTest extends TestCase
         $this->assertDatabaseHas('offers', ['id' => $offer->id, 'name' => 'Updated Offer Name']);
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_delete_offer()
     {
         $admin = User::factory()->create();
@@ -123,7 +124,7 @@ class OfferTest extends TestCase
         $this->assertDatabaseMissing('offers', ['id' => $offer->id]);
     }
 
-    /** @test */
+    #[Test]
     public function waiter_cannot_manage_offers()
     {
         $waiter = User::factory()->create();

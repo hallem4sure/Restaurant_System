@@ -34,7 +34,9 @@ class OrderController extends Controller
         $tables = RestaurantTable::all();
         $reservations = Reservation::whereIn('status', ['confirmed', 'seated'])->get();
         $menuItems = MenuItem::where('is_available', true)->get();
-        return view('admin.orders.create', compact('tables', 'reservations', 'menuItems'));
+        $taxRate = 5; // Default pending settings
+        $serviceChargeRate = 10;
+        return view('admin.orders.create', compact('tables', 'reservations', 'menuItems', 'taxRate', 'serviceChargeRate'));
     }
 
     public function store(StoreOrderRequest $request)
@@ -62,7 +64,9 @@ class OrderController extends Controller
         $tables = RestaurantTable::all();
         $reservations = Reservation::whereIn('status', ['confirmed', 'seated'])->get();
         $menuItems = MenuItem::where('is_available', true)->get();
-        return view('admin.orders.edit', compact('order', 'tables', 'reservations', 'menuItems'));
+        $taxRate = $order->tax_rate;
+        $serviceChargeRate = $order->service_charge_rate;
+        return view('admin.orders.edit', compact('order', 'tables', 'reservations', 'menuItems', 'taxRate', 'serviceChargeRate'));
     }
 
     public function update(UpdateOrderRequest $request, Order $order)

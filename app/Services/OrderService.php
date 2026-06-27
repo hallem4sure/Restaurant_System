@@ -48,9 +48,9 @@ class OrderService implements OrderServiceInterface
                 $subtotal += $itemSubtotal;
             }
 
-            // Defaults (Tax & Service Charge could be fetched from DB Settings here)
-            $taxRate = 0;
-            $serviceChargeRate = 0;
+            // Defaults – TODO: replace with Settings::get() once Settings module is complete
+            $taxRate = 5;
+            $serviceChargeRate = 10;
             
             $taxAmount = ($subtotal * $taxRate) / 100;
             $serviceChargeAmount = ($subtotal * $serviceChargeRate) / 100;

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Order;
@@ -47,7 +48,7 @@ class OrderTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function waiter_can_create_order()
     {
         $waiter = User::factory()->create();
@@ -62,7 +63,7 @@ class OrderTest extends TestCase
         $this->assertDatabaseHas('order_items', ['menu_item_id' => $menuItem->id, 'quantity' => 2]);
     }
 
-    /** @test */
+    #[Test]
     public function order_fails_without_items()
     {
         $admin = User::factory()->create();
@@ -77,7 +78,7 @@ class OrderTest extends TestCase
         $this->assertDatabaseCount('orders', 0);
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_update_order()
     {
         $admin = User::factory()->create();
@@ -96,7 +97,7 @@ class OrderTest extends TestCase
         $this->assertDatabaseHas('orders', ['id' => $order->id, 'status' => 'preparing']);
     }
 
-    /** @test */
+    #[Test]
     public function waiter_cannot_delete_order()
     {
         $waiter = User::factory()->create();
