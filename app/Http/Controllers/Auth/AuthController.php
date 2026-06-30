@@ -31,14 +31,10 @@ class AuthController extends Controller
 
             // Check role and redirect accordingly
             $user = Auth::user();
-            if ($user->hasRole('admin')) {
+            if ($user->hasRole('admin') || $user->hasRole('waiter') || $user->hasRole('cashier')) {
                 return redirect()->intended('admin/dashboard');
-            } elseif ($user->hasRole('waiter')) {
-                return redirect()->intended('waiter/dashboard');
-            } elseif ($user->hasRole('cashier')) {
-                return redirect()->intended('cashier/dashboard');
             } elseif ($user->hasRole('kitchen_staff')) {
-                return redirect()->intended('kitchen');
+                return redirect()->intended('admin/kitchen');
             }
 
             return redirect()->intended('/');

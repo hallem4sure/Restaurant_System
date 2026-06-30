@@ -7,26 +7,24 @@ use App\Models\User;
 
 class OrderPolicy
 {
-    // Assume waiter/admin can manage orders
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'waiter', 'cashier']);
+        return $user->can('view orders');
     }
 
     public function view(User $user, Order $order): bool
     {
-        return $user->hasAnyRole(['admin', 'waiter', 'cashier']);
+        return $user->can('view orders');
     }
 
     public function create(User $user): bool
     {
-        \Log::info('User roles: ' . json_encode($user->roles->pluck('name')));
-        return $user->hasRole('admin') || $user->hasRole('waiter');
+        return $user->can('create orders');
     }
 
     public function update(User $user, Order $order): bool
     {
-        return $user->hasAnyRole(['admin', 'waiter']);
+        return $user->can('update order status');
     }
 
     public function delete(User $user, Order $order): bool

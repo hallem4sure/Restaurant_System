@@ -7,31 +7,28 @@ use App\Models\User;
 
 class ReservationPolicy
 {
-    // Assuming 'manage tables' covers reservations, or if there is a 'manage reservations' we can use that.
-    // To be safe, we will just use 'manage tables' since reservations are tightly coupled.
-    
     public function viewAny(User $user): bool
     {
-        return $user->can('manage tables');
+        return $user->can('view reservations');
     }
 
     public function view(User $user, Reservation $reservation): bool
     {
-        return $user->can('manage tables');
+        return $user->can('view reservations');
     }
 
     public function create(User $user): bool
     {
-        return $user->can('manage tables');
+        return $user->can('create reservations');
     }
 
     public function update(User $user, Reservation $reservation): bool
     {
-        return $user->can('manage tables');
+        return $user->can('update reservation status');
     }
 
     public function delete(User $user, Reservation $reservation): bool
     {
-        return $user->can('manage tables');
+        return $user->hasRole('admin');
     }
 }

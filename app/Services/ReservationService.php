@@ -120,6 +120,8 @@ class ReservationService implements ReservationServiceInterface
 
         $overlappingReservations = Reservation::where('table_id', $tableId)
             ->whereNotIn('status', ['cancelled', 'no_show', 'completed'])
+            ->where('reserved_at', '>=', $requestedTime->copy()->subMinutes(480)) // Max duration is 480 mins
+            ->where('reserved_at', '<', $requestedEnd)
             ->when($excludeReservationId, function ($query, $id) {
                 return $query->where('id', '!=', $id);
             })

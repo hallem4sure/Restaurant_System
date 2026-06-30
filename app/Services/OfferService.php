@@ -12,7 +12,7 @@ class OfferService implements OfferServiceInterface
 {
     public function getAllOffers(): Collection
     {
-        return Offer::orderByDesc('created_at')->get();
+        return Offer::with('menuItems')->orderByDesc('created_at')->get();
     }
 
     public function getActiveOffers(): Collection

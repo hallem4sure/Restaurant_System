@@ -8,9 +8,7 @@ class StoreReservationRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->can('manage tables'); // we can use the same permission for reservations or create a new one, let's assume they have 'manage reservations' or admin role, but based on previous context, tables management was 'manage tables'. Wait, there is a specific permission in RolesAndPermissionsSeeder? I'll use 'manage tables' or let policy handle it. Let's return true here and let Policy handle it.
-        // Actually, it's safer to just return true and let Controller/Policy do the check.
-        return true;
+        return $this->user()->can('create reservations');
     }
 
     public function rules(): array

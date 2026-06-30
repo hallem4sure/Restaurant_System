@@ -35,7 +35,11 @@ class KitchenController extends Controller
             'status' => 'required|in:pending,preparing,ready'
         ]);
 
-        $this->kitchenService->updateItemStatus($itemId, $request->status);
+        try {
+            $this->kitchenService->updateItemStatus($itemId, $request->status);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
 
         return redirect()->back()->with('success', 'Item status updated.');
     }
@@ -48,7 +52,11 @@ class KitchenController extends Controller
             'status' => 'required|in:pending,preparing,ready'
         ]);
 
-        $this->kitchenService->updateOrderStatus($orderId, $request->status);
+        try {
+            $this->kitchenService->updateOrderStatus($orderId, $request->status);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
 
         return redirect()->back()->with('success', 'Order status updated.');
     }

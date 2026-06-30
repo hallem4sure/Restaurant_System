@@ -78,6 +78,17 @@ class KitchenTest extends TestCase
         ]);
 
         $response = $this->actingAs($kitchenStaff)->patch("/admin/kitchen/item/{$item->id}/status", [
+            'status' => 'preparing'
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('order_items', [
+            'id' => $item->id,
+            'kitchen_status' => 'preparing'
+        ]);
+
+        // Now transition to ready
+        $response = $this->actingAs($kitchenStaff)->patch("/admin/kitchen/item/{$item->id}/status", [
             'status' => 'ready'
         ]);
 
@@ -132,7 +143,12 @@ class KitchenTest extends TestCase
         // Order is still preparing
         $this->assertEquals('preparing', $order->fresh()->status);
 
-        // Update item 2 to ready
+        // Update item 2 to preparing first
+        $this->actingAs($kitchenStaff)->patch("/admin/kitchen/item/{$item2->id}/status", [
+            'status' => 'preparing'
+        ]);
+
+        // Then to ready
         $this->actingAs($kitchenStaff)->patch("/admin/kitchen/item/{$item2->id}/status", [
             'status' => 'ready'
         ]);
