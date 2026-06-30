@@ -21,6 +21,8 @@ use App\Contracts\Services\UserServiceInterface;
 use App\Services\UserService;
 use App\Contracts\Services\SettingServiceInterface;
 use App\Services\SettingService;
+use App\Contracts\Services\DashboardServiceInterface;
+use App\Services\DashboardService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -64,6 +66,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Contracts\Services\SettingServiceInterface::class,
             \App\Services\SettingService::class
+        );
+        $this->app->bind(
+            \App\Contracts\Services\DashboardServiceInterface::class,
+            \App\Services\DashboardService::class
         );
     }
 
