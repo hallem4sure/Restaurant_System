@@ -23,6 +23,8 @@ use App\Contracts\Services\SettingServiceInterface;
 use App\Services\SettingService;
 use App\Contracts\Services\DashboardServiceInterface;
 use App\Services\DashboardService;
+use App\Contracts\Services\ReportServiceInterface;
+use App\Services\ReportService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -70,6 +72,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Contracts\Services\DashboardServiceInterface::class,
             \App\Services\DashboardService::class
+        );
+        $this->app->bind(
+            \App\Contracts\Services\ReportServiceInterface::class,
+            \App\Services\ReportService::class
         );
     }
 

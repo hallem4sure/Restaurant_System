@@ -347,6 +347,12 @@ return [
         ],
         ['header' => 'account_settings'],
         [
+            'text' => 'Reports',
+            'url'  => 'admin/reports',
+            'icon' => 'fas fa-fw fa-chart-line',
+            'can'  => 'view reports',
+        ],
+        [
             'text' => 'Staff & Users',
             'url'  => 'admin/users',
             'icon' => 'fas fa-fw fa-users-cog',
@@ -401,7 +407,7 @@ return [
                 ],
             ],
         ],
-        ['header' => 'labels'],
+        ['header' => 'SYSTEM'],
         [
             'text' => 'important',
             'icon_color' => 'red',
