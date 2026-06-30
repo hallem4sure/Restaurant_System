@@ -328,6 +328,12 @@ return [
             'can'  => 'view orders',
         ],
         [
+            'text' => 'Bills / POS',
+            'url'  => 'admin/bills',
+            'icon' => 'fas fa-fw fa-file-invoice-dollar',
+            'can'  => 'view bills',
+        ],
+        [
             'text' => 'blog',
             'url' => 'admin/blog',
             'can' => 'manage-blog',

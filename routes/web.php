@@ -42,4 +42,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin|waiter|c
     Route::get('kitchen', [\App\Http\Controllers\Admin\KitchenController::class, 'index'])->name('kitchen.index');
     Route::patch('kitchen/item/{item}/status', [\App\Http\Controllers\Admin\KitchenController::class, 'updateItemStatus'])->name('kitchen.item.update-status');
     Route::patch('kitchen/order/{order}/status', [\App\Http\Controllers\Admin\KitchenController::class, 'updateOrderStatus'])->name('kitchen.order.update-status');
+
+    // Billing / POS Management
+    Route::resource('bills', \App\Http\Controllers\Admin\BillController::class)->except(['create']);
 });

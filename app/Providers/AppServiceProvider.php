@@ -35,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Contracts\Services\KitchenServiceInterface::class,
             \App\Services\KitchenService::class
         );
+        $this->app->bind(
+            \App\Contracts\Services\BillServiceInterface::class,
+            \App\Services\BillService::class
+        );
     }
 
     /**

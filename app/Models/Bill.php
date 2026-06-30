@@ -10,6 +10,7 @@ class Bill extends Model
         'bill_number',
         'order_id',
         'cashier_id',
+        'status',
         'subtotal',
         'discount_amount',
         'tax_amount',
@@ -44,5 +45,20 @@ class Bill extends Model
     public function cashier()
     {
         return $this->belongsTo(User::class, 'cashier_id');
+    }
+
+    public function isPending(): bool
+    {
+        return $this->status === 'pending';
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->status === 'paid';
+    }
+
+    public function isCancelled(): bool
+    {
+        return $this->status === 'cancelled';
     }
 }
