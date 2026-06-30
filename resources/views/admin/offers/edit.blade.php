@@ -8,7 +8,7 @@
 @section('page_title', 'Edit Offer: ' . $offer->name)
 
 @section('main_content')
-<form action="{{ route('admin.offers.update', $offer) }}" method="POST">
+<form action="{{ route('admin.offers.update', $offer) }}" method="POST" data-loading>
 @csrf @method('PUT')
 
 <div class="row">

@@ -7,7 +7,7 @@
     <div class="card-header">
         <h3 class="card-title">Edit Table: {{ $table->table_number }}</h3>
     </div>
-    <form action="{{ route('admin.tables.update', $table) }}" method="POST">
+    <form action="{{ route('admin.tables.update', $table) }}" method="POST" data-loading>
         @csrf
         @method('PUT')
         <div class="card-body">

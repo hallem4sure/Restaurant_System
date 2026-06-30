@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
-@section('page_title', 'Kitchen Display System')
+@section('page_title', 'Kitchen Dashboard')
+
+@section('breadcrumbs')
+    @include('partials.breadcrumbs', ['crumbs' => [
+        ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+        ['label' => 'Kitchen Dashboard'],
+    ]])
+@endsection
 
 @section('custom_css')
 <style>

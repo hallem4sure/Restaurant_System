@@ -1,10 +1,18 @@
 @extends('layouts.app')
 
-@section('page_title', 'Reservations Management')
+@section('page_title', 'Reservations')
+
+@section('breadcrumbs')
+    @include('partials.breadcrumbs', ['crumbs' => [
+        ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+        ['label' => 'Reservations'],
+    ]])
+@endsection
 
 @section('main_content')
 <div class="row mb-3">
     <div class="col-12 d-flex justify-content-between align-items-center">
+        <p class="text-muted mb-0">Manage table reservations and bookings.</p>
         <a href="{{ route('admin.reservations.create') }}" class="btn btn-primary">
             <i class="fas fa-plus mr-1"></i> New Reservation
         </a>
@@ -12,23 +20,32 @@
 </div>
 
 @if ($reservations->isEmpty())
-    <div class="alert alert-info">No reservations yet.</div>
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No Reservations Yet</h4>
+            <p class="text-muted">There are currently no reservations. Create one to get started.</p>
+            <a href="{{ route('admin.reservations.create') }}" class="btn btn-primary mt-2">
+                <i class="fas fa-plus mr-1"></i> Create First Reservation
+            </a>
+        </div>
+    </div>
 @else
 <div class="card card-outline card-primary">
     <div class="card-header">
         <h3 class="card-title"><i class="fas fa-calendar-alt mr-1"></i> All Reservations</h3>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-0 table-responsive">
         <table class="table table-hover table-striped mb-0">
             <thead class="thead-light">
                 <tr>
-                    <th>Date & Time</th>
-                    <th>Customer Name</th>
-                    <th>Contact</th>
-                    <th>Party Size</th>
-                    <th>Table</th>
-                    <th>Status</th>
-                    <th class="text-center">Actions</th>
+                    <th scope="col">Date &amp; Time</th>
+                    <th scope="col">Customer Name</th>
+                    <th scope="col">Contact</th>
+                    <th scope="col">Party Size</th>
+                    <th scope="col">Table</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,7 +64,7 @@
                         <small class="text-muted">{{ $reservation->customer_email }}</small>
                     </td>
                     <td>
-                        <span class="badge badge-info">{{ $reservation->party_size }} Persons</span>
+                        <span class="badge badge-info"><i class="fas fa-users mr-1"></i>{{ $reservation->party_size }}</span>
                     </td>
                     <td>
                         <strong>{{ $reservation->table->table_number ?? 'Unknown' }}</strong>
@@ -56,18 +73,19 @@
                     <td>
                         @php
                             $statusColors = [
-                                'pending' => 'warning',
+                                'pending'   => 'warning',
                                 'confirmed' => 'primary',
-                                'seated' => 'info',
+                                'seated'    => 'info',
                                 'completed' => 'success',
                                 'cancelled' => 'danger',
-                                'no_show' => 'dark',
+                                'no_show'   => 'dark',
                             ];
                             $color = $statusColors[$reservation->status] ?? 'secondary';
                         @endphp
-                        
                         <div class="dropdown">
-                            <button class="btn btn-{{ $color }} btn-sm dropdown-toggle" type="button" id="statusMenu{{ $reservation->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-{{ $color }} btn-sm dropdown-toggle" type="button"
+                                id="statusMenu{{ $reservation->id }}" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
                                 {{ ucfirst(str_replace('_', ' ', $reservation->status)) }}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="statusMenu{{ $reservation->id }}">
@@ -83,13 +101,17 @@
                             </div>
                         </div>
                     </td>
-                    <td class="text-center">
-                        <a href="{{ route('admin.reservations.show', $reservation) }}" class="btn btn-xs btn-info" title="View"><i class="fas fa-eye"></i></a>
-                        <a href="{{ route('admin.reservations.edit', $reservation) }}" class="btn btn-xs btn-warning" title="Edit"><i class="fas fa-edit"></i></a>
-                        <form action="{{ route('admin.reservations.destroy', $reservation) }}" method="POST" class="d-inline"
-                              onsubmit="return confirm('Delete this reservation?');">
+                    <td class="text-center" style="white-space:nowrap;">
+                        <a href="{{ route('admin.reservations.show', $reservation) }}" class="btn btn-xs btn-info" title="View Reservation"><i class="fas fa-eye"></i></a>
+                        <a href="{{ route('admin.reservations.edit', $reservation) }}" class="btn btn-xs btn-warning" title="Edit Reservation"><i class="fas fa-edit"></i></a>
+                        <form action="{{ route('admin.reservations.destroy', $reservation) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-xs btn-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                            <button type="button" class="btn btn-xs btn-danger" title="Delete Reservation"
+                                data-confirm="Delete reservation for {{ $reservation->customer_name }}? This cannot be undone."
+                                data-confirm-title="Delete Reservation"
+                                data-confirm-btn="Yes, delete it">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </form>
                     </td>
                 </tr>

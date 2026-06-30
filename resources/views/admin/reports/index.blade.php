@@ -2,6 +2,13 @@
 
 @section('page_title', 'Reports')
 
+@section('breadcrumbs')
+    @include('partials.breadcrumbs', ['crumbs' => [
+        ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+        ['label' => 'Reports'],
+    ]])
+@endsection
+
 @section('custom_css')
 <style>
     .trend-up { color: #28a745; }

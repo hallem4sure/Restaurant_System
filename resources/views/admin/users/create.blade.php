@@ -2,6 +2,14 @@
 
 @section('page_title', 'Add New User')
 
+@section('breadcrumbs')
+    @include('partials.breadcrumbs', ['crumbs' => [
+        ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+        ['label' => 'Staff & Users', 'url' => route('admin.users.index')],
+        ['label' => 'Add New User'],
+    ]])
+@endsection
+
 @section('main_content')
 <div class="row justify-content-center">
     <div class="col-md-8">
@@ -10,7 +18,7 @@
                 <h3 class="card-title"><i class="fas fa-user-plus mr-1"></i> New User Profile</h3>
             </div>
             
-            <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data" data-loading>
                 @csrf
                 <div class="card-body">
                     <div class="form-group">

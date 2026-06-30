@@ -3,7 +3,7 @@
 @section('page_title', 'Create Order')
 
 @section('main_content')
-<form action="{{ route('admin.orders.store') }}" method="POST" id="order-form">
+<form action="{{ route('admin.orders.store') }}" method="POST" data-loading id="order-form">
 @csrf
 
 <div class="row">

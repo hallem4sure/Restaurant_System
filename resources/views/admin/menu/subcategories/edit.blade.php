@@ -7,7 +7,7 @@
     <div class="card-header">
         <h3 class="card-title">Edit Subcategory: {{ $menuSubcategory->name }}</h3>
     </div>
-    <form action="{{ route('admin.menu-subcategories.update', $menuSubcategory) }}" method="POST">
+    <form action="{{ route('admin.menu-subcategories.update', $menuSubcategory) }}" method="POST" data-loading>
         @csrf
         @method('PUT')
         <div class="card-body">

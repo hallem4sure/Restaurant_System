@@ -3,7 +3,7 @@
 @section('page_title', 'Edit Reservation')
 
 @section('main_content')
-<form action="{{ route('admin.reservations.update', $reservation) }}" method="POST">
+<form action="{{ route('admin.reservations.update', $reservation) }}" method="POST" data-loading>
 @csrf @method('PUT')
 
 <div class="row">

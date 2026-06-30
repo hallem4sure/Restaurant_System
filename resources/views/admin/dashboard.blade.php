@@ -2,6 +2,12 @@
 
 @section('page_title', 'Dashboard')
 
+@section('breadcrumbs')
+    @include('partials.breadcrumbs', ['crumbs' => [
+        ['label' => 'Dashboard'],
+    ]])
+@endsection
+
 @section('custom_css')
 <style>
     .small-box .icon { top: 0px; }

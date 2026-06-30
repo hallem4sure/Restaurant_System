@@ -14,9 +14,9 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Restaurant Admin',
     'title_prefix' => '',
-    'title_postfix' => '',
+    'title_postfix' => ' | Restaurant System',
 
     /*
     |--------------------------------------------------------------------------
@@ -63,12 +63,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Restaurant</b> Admin',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'Restaurant Logo',
 
     /*
     |--------------------------------------------------------------------------
@@ -256,13 +256,13 @@ return [
     |
     */
 
-    'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'use_route_url' => true,
+    'dashboard_url' => 'admin.dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
-    'register_url' => 'register',
-    'password_reset_url' => 'password/reset',
-    'password_email_url' => 'password/email',
+    'register_url' => false,
+    'password_reset_url' => false,
+    'password_email_url' => false,
     'profile_url' => false,
     'disable_darkmode_routes' => false,
 
@@ -301,24 +301,21 @@ return [
     'menu' => [
         // Navbar items:
         [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => true,
-        ],
-        [
-            'type' => 'fullscreen-widget',
+            'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
 
         // Sidebar items:
         [
-            'type' => 'sidebar-menu-search',
-            'text' => 'search',
+            'text' => 'Dashboard',
+            'url'  => 'admin/dashboard',
+            'icon' => 'fas fa-fw fa-tachometer-alt',
         ],
+        ['header' => 'OPERATIONS'],
         [
             'text' => 'Kitchen Dashboard',
             'url'  => 'admin/kitchen',
-            'icon' => 'fas fa-fw fa-utensils',
+            'icon' => 'fas fa-fw fa-fire-alt',
             'can'  => 'view kitchen',
         ],
         [
@@ -333,19 +330,47 @@ return [
             'icon' => 'fas fa-fw fa-file-invoice-dollar',
             'can'  => 'view bills',
         ],
+        ['header' => 'MANAGEMENT'],
         [
-            'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
+            'text' => 'Reservations',
+            'url'  => 'admin/reservations',
+            'icon' => 'fas fa-fw fa-calendar-check',
+            'can'  => 'view reservations',
         ],
         [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
+            'text'    => 'Menu',
+            'icon'    => 'fas fa-fw fa-utensils',
+            'can'     => 'manage menu',
+            'submenu' => [
+                [
+                    'text' => 'Menu Items',
+                    'url'  => 'admin/menu/items',
+                    'icon' => 'fas fa-fw fa-hamburger',
+                ],
+                [
+                    'text' => 'Categories',
+                    'url'  => 'admin/menu/categories',
+                    'icon' => 'fas fa-fw fa-tags',
+                ],
+                [
+                    'text' => 'Sections',
+                    'url'  => 'admin/menu/sections',
+                    'icon' => 'fas fa-fw fa-layer-group',
+                ],
+                [
+                    'text' => 'Offers',
+                    'url'  => 'admin/offers',
+                    'icon' => 'fas fa-fw fa-percent',
+                ],
+            ],
         ],
-        ['header' => 'account_settings'],
+        [
+            'text' => 'Tables',
+            'url'  => 'admin/tables',
+            'icon' => 'fas fa-fw fa-chair',
+            'can'  => 'manage tables',
+        ],
+        ['header' => 'SYSTEM'],
         [
             'text' => 'Reports',
             'url'  => 'admin/reports',
@@ -359,69 +384,10 @@ return [
             'can'  => 'manage users',
         ],
         [
-            'text' => 'General Settings',
-            'url' => 'admin/settings',
+            'text' => 'Settings',
+            'url'  => 'admin/settings',
             'icon' => 'fas fa-fw fa-cogs',
             'can'  => 'manage settings',
-        ],
-        [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
-            'text' => 'multilevel',
-            'icon' => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
-                ],
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                        ],
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
-                ],
-            ],
-        ],
-        ['header' => 'SYSTEM'],
-        [
-            'text' => 'important',
-            'icon_color' => 'red',
-            'url' => '#',
-        ],
-        [
-            'text' => 'warning',
-            'icon_color' => 'yellow',
-            'url' => '#',
-        ],
-        [
-            'text' => 'information',
-            'icon_color' => 'cyan',
-            'url' => '#',
         ],
     ],
 
@@ -511,7 +477,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@11',
                 ],
             ],
         ],

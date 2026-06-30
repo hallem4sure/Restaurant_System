@@ -2,10 +2,17 @@
 
 @section('page_title', 'Bills / POS')
 
+@section('breadcrumbs')
+    @include('partials.breadcrumbs', ['crumbs' => [
+        ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+        ['label' => 'Bills / POS'],
+    ]])
+@endsection
+
 @section('main_content')
 <div class="row mb-3">
     <div class="col-12 d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 text-muted">Manage and track all billing transactions</h5>
+        <p class="text-muted mb-0">Manage and track all billing transactions.</p>
         @can('create', \App\Models\Bill::class)
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#generateBillModal">
             <i class="fas fa-plus mr-1"></i> Generate Bill
@@ -20,7 +27,7 @@
         <div class="info-box bg-warning">
             <span class="info-box-icon"><i class="fas fa-clock"></i></span>
             <div class="info-box-content">
-                <span class="info-box-text">Pending</span>
+                <span class="info-box-text">Pending Bills</span>
                 <span class="info-box-number">{{ $bills->where('status', 'pending')->count() }}</span>
             </div>
         </div>
@@ -46,25 +53,36 @@
 </div>
 
 @if ($bills->isEmpty())
-    <div class="alert alert-info"><i class="fas fa-info-circle mr-1"></i> No bills generated yet.</div>
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <i class="fas fa-file-invoice-dollar fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No Bills Generated Yet</h4>
+            <p class="text-muted">Generate your first bill from a completed order to start the POS workflow.</p>
+            @can('create', \App\Models\Bill::class)
+            <button type="button" class="btn btn-success mt-2" data-toggle="modal" data-target="#generateBillModal">
+                <i class="fas fa-plus mr-1"></i> Generate First Bill
+            </button>
+            @endcan
+        </div>
+    </div>
 @else
 <div class="card card-outline card-primary">
     <div class="card-header">
         <h3 class="card-title"><i class="fas fa-file-invoice-dollar mr-1"></i> All Bills</h3>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-0 table-responsive">
         <table class="table table-hover table-striped mb-0">
             <thead class="thead-light">
                 <tr>
-                    <th>Bill #</th>
-                    <th>Order #</th>
-                    <th>Date</th>
-                    <th>Subtotal</th>
-                    <th>Tax</th>
-                    <th>Total</th>
-                    <th>Payment</th>
-                    <th>Status</th>
-                    <th class="text-center">Actions</th>
+                    <th scope="col">Bill #</th>
+                    <th scope="col">Order #</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Tax</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Payment</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,7 +101,7 @@
                     </td>
                     <td>{{ number_format($bill->subtotal, 2) }}</td>
                     <td>{{ number_format($bill->tax_amount, 2) }}</td>
-                    <td><strong>{{ number_format($bill->total_amount, 2) }}</strong></td>
+                    <td><strong>{{ setting('billing.currency_symbol', '$') }}{{ number_format($bill->total_amount, 2) }}</strong></td>
                     <td>
                         @if($bill->payment_method)
                             @php
@@ -102,17 +120,22 @@
                         @endphp
                         <span class="badge badge-{{ $color }}">{{ ucfirst($bill->status) }}</span>
                     </td>
-                    <td class="text-center">
-                        <a href="{{ route('admin.bills.show', $bill) }}" class="btn btn-xs btn-info" title="Invoice"><i class="fas fa-eye"></i></a>
+                    <td class="text-center" style="white-space:nowrap;">
+                        <a href="{{ route('admin.bills.show', $bill) }}" class="btn btn-xs btn-info" title="View Invoice"><i class="fas fa-eye"></i></a>
                         @if($bill->isPending())
                             @can('processPayment', $bill)
                             <a href="{{ route('admin.bills.edit', $bill) }}" class="btn btn-xs btn-success" title="Process Payment"><i class="fas fa-cash-register"></i></a>
                             @endcan
                             @can('delete', $bill)
-                            <form action="{{ route('admin.bills.destroy', $bill) }}" method="POST" class="d-inline"
-                                  onsubmit="return confirm('Cancel this bill?');">
+                            <form action="{{ route('admin.bills.destroy', $bill) }}" method="POST" class="d-inline">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="btn btn-xs btn-danger" title="Cancel"><i class="fas fa-ban"></i></button>
+                                <button type="button" class="btn btn-xs btn-danger" title="Cancel Bill"
+                                    data-confirm="Cancel bill {{ $bill->bill_number }}? This cannot be undone."
+                                    data-confirm-title="Cancel Bill"
+                                    data-confirm-icon="warning"
+                                    data-confirm-btn="Yes, cancel it">
+                                    <i class="fas fa-ban"></i>
+                                </button>
                             </form>
                             @endcan
                         @endif
@@ -141,7 +164,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('admin.bills.store') }}" method="POST">
+            <form action="{{ route('admin.bills.store') }}" method="POST" data-loading>
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">

@@ -66,7 +66,7 @@
                 <h3 class="card-title"><i class="fas fa-cash-register mr-1"></i> Payment Details</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.bills.update', $bill) }}" method="POST" id="paymentForm">
+                <form action="{{ route('admin.bills.update', $bill) }}" method="POST" data-loading id="paymentForm">
                     @csrf @method('PUT')
 
                     {{-- Payment Method --}}

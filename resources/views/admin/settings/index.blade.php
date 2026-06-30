@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
-@section('page_title', 'System Settings')
+@section('page_title', 'Settings')
+
+@section('breadcrumbs')
+    @include('partials.breadcrumbs', ['crumbs' => [
+        ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+        ['label' => 'Settings'],
+    ]])
+@endsection
 
 @section('main_content')
 <div class="row">
@@ -25,7 +32,7 @@
         </div>
     </div>
     <div class="col-md-9">
-        <form action="{{ route('admin.settings.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.settings.store') }}" method="POST" enctype="multipart/form-data" data-loading>
             @csrf
             <div class="card card-outline card-secondary">
                 <div class="card-header">

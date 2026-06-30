@@ -7,7 +7,7 @@
     <div class="card-header">
         <h3 class="card-title">New Item</h3>
     </div>
-    <form action="{{ route('admin.menu-items.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.menu-items.store') }}" method="POST" data-loading enctype="multipart/form-data">
         @csrf
         <div class="card-body row">
             <div class="col-md-6">

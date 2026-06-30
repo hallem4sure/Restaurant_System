@@ -10,7 +10,7 @@
                 <h3 class="card-title"><i class="fas fa-user-edit mr-1"></i> Edit Profile</h3>
             </div>
             
-            <form action="{{ route('admin.users.update', $user) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.users.update', $user) }}" method="POST" data-loading enctype="multipart/form-data">
                 @csrf @method('PUT')
                 <div class="card-body">
                     <div class="form-group text-center">

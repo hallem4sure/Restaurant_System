@@ -7,7 +7,7 @@
 @section('page_title', 'Create Offer')
 
 @section('main_content')
-<form action="{{ route('admin.offers.store') }}" method="POST">
+<form action="{{ route('admin.offers.store') }}" method="POST" data-loading>
 @csrf
 
 <div class="row">

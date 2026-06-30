@@ -7,7 +7,7 @@
     <div class="card-header">
         <h3 class="card-title">Edit Item: {{ $menuItem->name }}</h3>
     </div>
-    <form action="{{ route('admin.menu-items.update', $menuItem) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.menu-items.update', $menuItem) }}" method="POST" data-loading enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="card-body row">

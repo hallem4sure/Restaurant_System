@@ -7,7 +7,7 @@
     <div class="card-header">
         <h3 class="card-title">New Category</h3>
     </div>
-    <form action="{{ route('admin.menu-categories.store') }}" method="POST">
+    <form action="{{ route('admin.menu-categories.store') }}" method="POST" data-loading>
         @csrf
         <div class="card-body">
             <div class="form-group">
