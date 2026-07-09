@@ -107,7 +107,7 @@ class ReservationService implements ReservationServiceInterface
         }
 
         $requestedTime = Carbon::parse($datetime);
-        if (!$this->isTableAvailable($tableId, $requestedTime, $duration, $excludeReservationId)) {
+        if (!$this->isTableAvailable($tableId, $requestedTime, (int) $duration, $excludeReservationId)) {
             throw ValidationException::withMessages([
                 'reserved_at' => ['This table is already booked for the selected date and time.']
             ]);

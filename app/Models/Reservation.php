@@ -23,7 +23,9 @@ class Reservation extends Model
     protected function casts(): array
     {
         return [
-            'reserved_at' => 'datetime',
+            'reserved_at'      => 'datetime',
+            'duration_minutes' => 'integer',
+            'party_size'       => 'integer',
         ];
     }
 
