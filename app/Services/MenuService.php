@@ -56,7 +56,7 @@ class MenuService implements MenuServiceInterface
         if (isset($data['images']) && is_array($data['images'])) {
             // Option to delete old images or keep them. Let's delete old ones for simplicity unless told otherwise
             foreach ($item->images as $oldImage) {
-                Storage::disk('public')->delete($oldImage->image_path);
+                Storage::disk('public')->delete($oldImage->path);
                 $oldImage->delete();
             }
 
@@ -88,7 +88,7 @@ class MenuService implements MenuServiceInterface
 
         MenuItemImage::create([
             'menu_item_id' => $item->id,
-            'image_path' => $path,
+            'path' => $path,
             'is_primary' => $item->images()->count() === 0,
         ]);
     }

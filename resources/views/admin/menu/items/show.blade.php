@@ -31,7 +31,7 @@
                         <div class="carousel-inner">
                             @foreach($menuItem->images as $index => $image)
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" class="d-block w-100" alt="Item Image">
+                                    <img src="{{ asset('storage/' . $image->path) }}" class="d-block w-100" alt="Item Image">
                                 </div>
                             @endforeach
                         </div>

@@ -55,7 +55,7 @@
                         <td class="align-middle">{{ $item->id }}</td>
                         <td class="align-middle">
                             @if($item->images->count() > 0)
-                                <img src="{{ asset('storage/' . $item->images->first()->image_path) }}" alt="{{ $item->name }}" width="50" height="50" class="img-thumbnail" style="object-fit:cover;">
+                                <img src="{{ asset('storage/' . $item->images->first()->path) }}" alt="{{ $item->name }}" width="50" height="50" class="img-thumbnail" style="object-fit:cover;">
                             @else
                                 <div class="bg-light border text-muted d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 0.8rem;">
                                     <i class="fas fa-image"></i>

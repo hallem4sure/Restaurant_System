@@ -69,7 +69,7 @@
                     <label>Current Images</label>
                     <div class="mb-2">
                         @forelse($menuItem->images as $image)
-                            <img src="{{ asset('storage/' . $image->image_path) }}" alt="Image" class="img-thumbnail mr-2" width="100">
+                            <img src="{{ asset('storage/' . $image->path) }}" alt="Image" class="img-thumbnail mr-2" width="100">
                         @empty
                             <span class="text-muted">No images currently.</span>
                         @endforelse
