@@ -170,7 +170,7 @@ class ReportService implements ReportServiceInterface
                     DB::raw('SUM(subtotal) as total_revenue')
                 )
                 ->with(['menuItem' => function ($q) {
-                    $q->select('id', 'name', 'menu_category_id')->with('category:id,name');
+                    $q->select('id', 'name', 'category_id')->with('category:id,name');
                 }])
                 ->groupBy('menu_item_id')
                 ->orderByDesc('total_quantity')
