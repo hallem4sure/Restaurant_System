@@ -124,13 +124,13 @@ Every step of this process is strictly isolated by a robust role-based access co
 
 ## Screenshots
 
-### Login
-![Login](docs/images/login.png)
+### Dashboard
+![Dashboard](docs/images/dashboard.png)
 
 ---
 
-### Dashboard
-![Dashboard](docs/images/dashboard.png)
+### Login
+![Login](docs/images/login.png)
 
 ---
 
